@@ -10,7 +10,7 @@ export default () => {
 
 	timer(3000).subscribe(() => subscription.unsubscribe());
 
-	const source2 = timer(4000, 100);
+	const source2 = timer(4000, 100); // primer parametro es el retraso
 	const subscription2 = source2.subscribe((data) => displayLog(`2 - ${data}`));
 
 	timer(6000).subscribe(() => subscription2.unsubscribe());
