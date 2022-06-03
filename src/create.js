@@ -10,5 +10,10 @@ export default () => {
 
 	timer(3000).subscribe(() => subscription.unsubscribe());
 
+	const source2 = timer(4000, 100);
+	const subscription2 = source2.subscribe((data) => displayLog(`2 - ${data}`));
+
+	timer(6000).subscribe(() => subscription2.unsubscribe());
+
 	/** end coding */
 };
