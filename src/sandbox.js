@@ -16,7 +16,7 @@ export default () => {
 	const scroll$ = fromEvent(document, 'scroll').pipe(
 		map(() => docElement.scrollTop),
 		tap((evt) => console.log('[scroll]: ', evt)),
-		pairwise(),
+		pairwise(), // permite acceder al evento anterior sin almacenarlo
 		tap(([previous, current]) => {
 			updateDisplay(current > previous ? 'DESC' : 'ASC');
 		}),
