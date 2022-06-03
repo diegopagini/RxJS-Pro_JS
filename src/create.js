@@ -1,5 +1,5 @@
 /** @format */
-import { of } from 'rxjs';
+import { of, range } from 'rxjs';
 
 import { displayLog } from './utils';
 
@@ -9,6 +9,7 @@ export default () => {
 	const sourse2 = of([1, 2, 3, 4], 'Hello World!', { foo: 'bar' }, () => {
 		return 'Hi';
 	});
-	const subscription = sourse2.subscribe((data) => displayLog(data));
+	const sourse3 = range(3, 10);
+	const subscription = sourse3.subscribe((data) => displayLog(data));
 	/** end coding */
 };
