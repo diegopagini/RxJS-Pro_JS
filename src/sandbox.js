@@ -1,20 +1,22 @@
-import { updateDisplay, displayLog } from './utils';
-import { api } from './api';
+/** @format */
 import { fromEvent } from 'rxjs';
-import { map, scan, tap, mergeMap } from 'rxjs/operators';
+import { map, scan, switchMap, tap } from 'rxjs/operators';
+
+import { api } from './api';
+import { displayLog } from './utils';
 
 export default () => {
-    /** start coding */
-    
-    const button = document.getElementById('btn');
+	/** start coding */
 
-    /** get comments on button click */
-    fromEvent(button, 'click').pipe(
-        scan((acc, evt) => acc + 1, 0),            
-        mergeMap(id => api.getComment(id)),
-        map(JSON.stringify),
-        tap(console.log),
-    ).subscribe(displayLog);
+	const button = document.getElementById('btn');
 
-    /** end coding */
-}
+	/** get comments on button click */
+	fromEvent(button, 'click')
+		.pipe(
+			scan((acc, evt) => acc + 1, 0), // como reduce
+			switchMap((id) => api.getComment(id)), // llamo a otro obs con el valor del primero aplanandolo
+			map(JSON.stringify), // convierto a string
+			tap(console.log) // muestro por consola
+		)
+		.subscribe(displayLog);
+};
