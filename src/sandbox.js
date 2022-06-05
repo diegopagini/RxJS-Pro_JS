@@ -1,20 +1,31 @@
-import { updateDisplay, displayLog } from './utils';
-import { api } from './api';
+/** @format */
 import { fromEvent } from 'rxjs';
-import { map, scan, tap, concatMap } from 'rxjs/operators';
+import { catchError, concatMap, map, scan, tap } from 'rxjs/operators';
+
+import { api } from './api';
+import { displayLog } from './utils';
 
 export default () => {
-    /** start coding */
-    
-    const button = document.getElementById('btn');
+	/** start coding */
 
-    /** get comments on button click */
-    fromEvent(button, 'click').pipe(
-        scan((acc, evt) => acc + 1, 0),            
-        concatMap(id => api.getComment(id)),
-        map(JSON.stringify),
-        tap(console.log),
-    ).subscribe(displayLog);
+	const button = document.getElementById('btn');
 
-    /** end coding */
-}
+	/** get comments on button click */
+	fromEvent(button, 'click')
+		.pipe(
+			scan((acc, evt) => acc + 1, 0),
+			concatMap((id) =>
+				api.getComment(id).pipe(
+					catchError((err, src$) => {
+						console.log('catch!');
+						return src$; // El segundo parámetro del catchError devuelve el primer obsevable.
+					})
+				)
+			),
+			map(JSON.stringify),
+			tap(console.log)
+		)
+		.subscribe(displayLog);
+
+	/** end coding */
+};
